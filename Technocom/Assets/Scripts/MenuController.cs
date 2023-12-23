@@ -1,44 +1,56 @@
-using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
     [SerializeField]
+    private TextMeshProUGUI _ticketsText;
+
+    [SerializeField]
     private Image _rewardReminder;
 
-    private DateTime _receivedRewardTime;
+    [SerializeField]
+    private WeeklyBonusInfo _weeklyBonusInfo;
 
-    private int _rewardCounter = 0;
+    private const float TIME_UPDATE = 10f;
 
-    public void OnRewardButtonClicked()
+    private void OnDestroy()
     {
-        _rewardReminder.gameObject.SetActive(false);
-        _receivedRewardTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month,
-            DateTime.Now.Day);
-        _rewardCounter++;
+        GameCharacteristics.OnTicketsChanged -= TicketsChangedHandler;
     }
 
     private void Start()
     {
-        StartCoroutine(RewardTime());   
+        GameCharacteristics.OnTicketsChanged += TicketsChangedHandler;
+        StartCoroutine(RewardTime());
+    }
+
+    private void TicketsChangedHandler(int tickets)
+    {
+        _ticketsText.text = tickets.ToString();
     }
 
     private IEnumerator RewardTime()
     {
         while (true)
         {
-            if ((DateTime.Now - _receivedRewardTime).Days == 1)
+            _weeklyBonusInfo.CheckReward();
+            if (_weeklyBonusInfo.IsRewardAvailable)
             {
                 _rewardReminder.gameObject.SetActive(true);
             }
-            else if ((DateTime.Now - _receivedRewardTime).Days > 1)
-            {
-                _rewardReminder.gameObject.SetActive(true);
-                _rewardCounter = 0;
-            }
-            yield return new WaitForSeconds(10f);
+            
+            yield return new WaitForSeconds(TIME_UPDATE);
+        }
+    }
+
+    public void OnRewardButtonClicked()
+    {
+        if (_weeklyBonusInfo.IsRewardAvailable)
+        {
+            _rewardReminder.gameObject.SetActive(false);
         }
     }
 }
