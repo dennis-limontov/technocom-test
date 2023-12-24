@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
@@ -9,7 +8,7 @@ public class MenuController : MonoBehaviour
     private TextMeshProUGUI _ticketsText;
 
     [SerializeField]
-    private Image _rewardReminder;
+    private GameObject _rewardReminder;
 
     [SerializeField]
     private WeeklyBonusInfo _weeklyBonusInfo;
@@ -39,7 +38,7 @@ public class MenuController : MonoBehaviour
             _weeklyBonusInfo.CheckReward();
             if (_weeklyBonusInfo.IsRewardAvailable)
             {
-                _rewardReminder.gameObject.SetActive(true);
+                _rewardReminder.SetActive(true);
             }
             
             yield return new WaitForSeconds(TIME_UPDATE);
@@ -50,7 +49,7 @@ public class MenuController : MonoBehaviour
     {
         if (_weeklyBonusInfo.IsRewardAvailable)
         {
-            _rewardReminder.gameObject.SetActive(false);
+            _rewardReminder.SetActive(false);
         }
     }
 }
