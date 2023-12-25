@@ -23,6 +23,7 @@ public class MenuController : MonoBehaviour
     private void Start()
     {
         GameCharacteristics.OnTicketsChanged += TicketsChangedHandler;
+        TicketsChangedHandler(GameCharacteristics.NEW_GAME_TICKETS);
         StartCoroutine(RewardTime());
     }
 
