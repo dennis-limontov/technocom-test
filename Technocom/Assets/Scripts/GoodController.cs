@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,6 +38,12 @@ public class GoodController : MonoBehaviour
     {
         GameCharacteristics.OnCurrentLevelChanged += CurrentLevelChangedHandler;
         CurrentLevelChangedHandler(GameCharacteristics.Instance.CurrentLevel);
+        
+        if (PlayerPrefs.HasKey(_shopItem.Name))
+        {
+            _shopItem.IsBought = Convert.ToBoolean(PlayerPrefs.GetInt(_shopItem.Name));
+        }
+
         CheckIfBought();
         DefineShopItem();
     }

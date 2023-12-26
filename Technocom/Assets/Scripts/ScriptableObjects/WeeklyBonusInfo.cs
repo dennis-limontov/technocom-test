@@ -8,7 +8,11 @@ public class WeeklyBonusInfo : ScriptableObject
     public int RewardCounter
     {
         get { return _rewardCounter; }
-        set { _rewardCounter = value; }
+        set
+        {
+            _rewardCounter = value;
+            PlayerPrefs.SetInt(nameof(RewardCounter), _rewardCounter);
+        }
     }
 
     private bool _isRewardAvailable = true;
@@ -22,6 +26,7 @@ public class WeeklyBonusInfo : ScriptableObject
         {
             _receivedRewardTime = value;
             _isRewardAvailable = false;
+            PlayerPrefs.SetString(nameof(ReceivedRewardTime), _receivedRewardTime.ToString());
         }
     }
 

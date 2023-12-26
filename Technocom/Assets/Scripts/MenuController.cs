@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,25 @@ public class MenuController : MonoBehaviour
     private void Start()
     {
         GameCharacteristics.OnTicketsChanged += TicketsChangedHandler;
-        TicketsChangedHandler(GameCharacteristics.NEW_GAME_TICKETS);
+
+        if (PlayerPrefs.HasKey(nameof(GameCharacteristics.Tickets)))
+        {
+            GameCharacteristics.Instance.Tickets = PlayerPrefs.GetInt(nameof(GameCharacteristics.Tickets));
+        }
+        if (PlayerPrefs.HasKey(nameof(GameCharacteristics.CurrentLevel)))
+        {
+            GameCharacteristics.Instance.CurrentLevel = PlayerPrefs.GetInt(nameof(GameCharacteristics.CurrentLevel));
+        }
+        if (PlayerPrefs.HasKey(nameof(_weeklyBonusInfo.RewardCounter)))
+        {
+            _weeklyBonusInfo.RewardCounter = PlayerPrefs.GetInt(nameof(_weeklyBonusInfo.RewardCounter));
+        }
+        if (PlayerPrefs.HasKey(nameof(_weeklyBonusInfo.ReceivedRewardTime)))
+        {
+            _weeklyBonusInfo.ReceivedRewardTime = DateTime.Parse(PlayerPrefs.GetString(nameof(_weeklyBonusInfo.ReceivedRewardTime)));
+        }
+
+        _rewardReminder.SetActive(_weeklyBonusInfo.IsRewardAvailable);
         StartCoroutine(RewardTime());
     }
 
@@ -37,10 +56,7 @@ public class MenuController : MonoBehaviour
         while (true)
         {
             _weeklyBonusInfo.CheckReward();
-            if (_weeklyBonusInfo.IsRewardAvailable)
-            {
-                _rewardReminder.SetActive(true);
-            }
+            _rewardReminder.SetActive(_weeklyBonusInfo.IsRewardAvailable);
             
             yield return new WaitForSeconds(TIME_UPDATE);
         }
@@ -48,9 +64,6 @@ public class MenuController : MonoBehaviour
 
     public void OnRewardButtonClicked()
     {
-        if (_weeklyBonusInfo.IsRewardAvailable)
-        {
-            _rewardReminder.SetActive(false);
-        }
+        _rewardReminder.SetActive(_weeklyBonusInfo.IsRewardAvailable);
     }
 }

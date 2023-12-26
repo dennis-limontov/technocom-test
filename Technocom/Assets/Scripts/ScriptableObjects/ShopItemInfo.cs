@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/ShopItemInfo")]
@@ -40,6 +41,7 @@ public class ShopItemInfo : ScriptableObject
         {
             GameCharacteristics.Instance.Tickets -= _price;
             _isBought = true;
+            PlayerPrefs.SetInt(_name, Convert.ToInt32(_isBought));
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class GameCharacteristics
 {
@@ -17,6 +18,7 @@ public class GameCharacteristics
         set
         {
             _tickets = value;
+            PlayerPrefs.SetInt(nameof(Tickets), _tickets);
             OnTicketsChanged?.Invoke(_tickets);
         }
     }
@@ -28,6 +30,7 @@ public class GameCharacteristics
         set
         {
             _currentLevel = value;
+            PlayerPrefs.SetInt(nameof(CurrentLevel), _currentLevel);
             OnCurrentLevelChanged?.Invoke(_currentLevel);
         }
     }
