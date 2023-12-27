@@ -14,7 +14,7 @@ public class MenuController : MonoBehaviour
     [SerializeField]
     private WeeklyBonusInfo _weeklyBonusInfo;
 
-    private const float TIME_UPDATE = 10f;
+    private const float UPDATE_TIME = 10f;
 
     private void OnDestroy()
     {
@@ -58,7 +58,7 @@ public class MenuController : MonoBehaviour
             _weeklyBonusInfo.CheckReward();
             _rewardReminder.SetActive(_weeklyBonusInfo.IsRewardAvailable);
             
-            yield return new WaitForSeconds(TIME_UPDATE);
+            yield return new WaitForSeconds(UPDATE_TIME);
         }
     }
 
